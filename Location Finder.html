@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Locate the user</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+</head>
+<body>
+<div id="map">Click The button to get your location </div>
+  <button onclick="getLocation()">Get Location</button>
+
+<script>
+
+function getLocation() {
+  navigator.geolocation.getCurrentPosition(showPosition);
+}
+
+function showPosition(position) {
+  var lat = position.coords.latitude;
+  var long = position.coords.longitude;
+  const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${long},${lat}.json?access_token=pk.eyJ1IjoiZHVtbXkwNTgwMzUiLCJhIjoiY2tudGF6YXQyMDE5ZDJucHN6ZDlvem5jcyJ9.o4QgJMzdB6vjrJhRVVklJw`; 
+  fetch(url).then(response => 
+    response.json().then(data => ({
+        data: data,
+        status: response.status
+    })
+    ).then(res => {
+    var x = document.getElementById("map");
+    //  console.log(res.status, res.data.features)
+    x.innerHTML = `Your location is: ${res.data.features[0].place_name}`; 
+  }));
+} 
+
+</script>
+
+</body>
+</html>
+
+<!-- 
+https://api.mapbox.com/geocoding/v5/mapbox.places/ %2C%43.9927321.json?access_token=pk.eyJ1IjoiZHVtbXkwNTgwMzUiLCJhIj oiY2tudGF6YXQyMDE5ZDJucHN6ZDlvem5jcyJ9.o4QgJMzdB6vjrJhRVVklJw
+
+-->
